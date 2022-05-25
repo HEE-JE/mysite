@@ -1,4 +1,4 @@
-package com.douzone.mysite.web.mvc.main;
+package com.douzone.mysite.web.mvc.user;
 
 import java.io.IOException;
 
@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.douzone.web.mvc.Action;
 import com.douzone.web.util.WebUtil;
 
-public class DefaultAction implements Action {
+public class JoinFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		WebUtil.forword(request, response, "main/index");
+		WebUtil.forword(request, response, "user/joinform");
 	}
 }
