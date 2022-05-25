@@ -27,7 +27,7 @@
 		<div id="wrapper">
 			<div id="content">
 				<div id="site-introduction">
-					<img id="profile" style="width: 120px"
+					<img id="profile" style="width: 150px"
 						src="<%=request.getContextPath()%>/assets/images/Martin.jpg">
 					<h2>안녕하세요. 이희제의 mysite에 오신 것을 환영합니다.</h2>
 					<p>
