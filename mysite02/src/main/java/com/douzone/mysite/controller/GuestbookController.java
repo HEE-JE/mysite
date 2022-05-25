@@ -6,11 +6,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.douzone.mysite.web.mvc.user.UserActionFactory;
+import com.douzone.mysite.web.mvc.guestbook.GuestbookActionFactory;
 import com.douzone.web.mvc.Action;
 import com.douzone.web.mvc.ActionFactory;
 
-public class UserController extends HttpServlet {
+public class GuestbookController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -18,7 +18,7 @@ public class UserController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		String actionName = request.getParameter("a");
 
-		ActionFactory factory = new UserActionFactory();
+		ActionFactory factory = new GuestbookActionFactory();
 		Action action = factory.getAction(actionName);
 		action.execute(request, response);
 	}
