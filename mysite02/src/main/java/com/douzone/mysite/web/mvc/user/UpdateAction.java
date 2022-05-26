@@ -41,7 +41,6 @@ public class UpdateAction implements Action {
 		vo.setGender(gender);
 
 		new UserRepository().update(vo);
-		authUser.setName(name);
 
 		WebUtil.redirect(request, response, request.getContextPath() + "/user?a=updateform");
 	}
