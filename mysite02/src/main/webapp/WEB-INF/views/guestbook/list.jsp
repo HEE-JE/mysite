@@ -48,7 +48,7 @@ List<GuestbookVo> list = (List<GuestbookVo>) request.getAttribute("list");
 								<td><%=vo.getName()%></td>
 								<td><%=vo.getRegDate()%></td>
 								<td><a
-									href="<%=request.getContextPath()%>/guestbook?a=deleteform&no=<%=vo.getNo()%>&check=true">삭제</a></td>
+									href="<%=request.getContextPath()%>/guestbook?a=deleteform&no=<%=vo.getNo()%>">삭제</a></td>
 							</tr>
 							<tr>
 								<td colspan=4><%=vo.getContent().replaceAll("\n", "<br/>").replaceAll(" ", "&nbsp;")%>

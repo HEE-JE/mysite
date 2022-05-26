@@ -23,13 +23,6 @@ boolean check = Boolean.parseBoolean(request.getParameter("check"));
 					<input type="password" name="password"> <input
 						type="submit" value="확인">
 				</form>
-				<%
-				if (!check) {
-				%>
-				<h6 style="text-align: center">비밀번호가 일치하지 않습니다.</h6>
-				<%
-				}
-				%>
 				<a href="<%=request.getContextPath()%>/guestbook">방명록 리스트</a>
 			</div>
 		</div>

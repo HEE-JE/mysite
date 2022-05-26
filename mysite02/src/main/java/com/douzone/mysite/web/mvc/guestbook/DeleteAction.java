@@ -21,11 +21,8 @@ public class DeleteAction implements Action {
 		vo.setNo(no);
 		vo.setPassword(password);
 
-		if (new GuestbookRepository().delete(vo)) {
-			WebUtil.redirect(request, response, request.getContextPath() + "/guestbook");
-		} else {
-			WebUtil.redirect(request, response,
-					request.getContextPath() + "/guestbook?a=deleteform&no=" + no + "&check=false");
-		}
+		new GuestbookRepository().delete(vo);
+
+		WebUtil.redirect(request, response, request.getContextPath() + "/guestbook");
 	}
 }
