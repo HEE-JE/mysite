@@ -19,6 +19,6 @@ public class IndexAction implements Action {
 		List<GuestbookVo> list = new GuestbookRepository().findAll();
 
 		request.setAttribute("list", list);
-		WebUtil.forword(request, response, "guestbook/list");
+		WebUtil.forword(request, response, "guestbook/index");
 	}
 }
