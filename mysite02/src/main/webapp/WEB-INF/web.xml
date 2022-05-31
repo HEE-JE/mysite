@@ -5,19 +5,36 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	version="2.5">
 	<display-name>mysite02</display-name>
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
-		<welcome-file>default.jsp</welcome-file>
-	</welcome-file-list>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>com.douzone.mysite.web.listener.ContextLoadListener
+		</listener-class>
+	</listener>
+	<filter>
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>com.douzone.mysite.web.filter.EncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<servlet>
 		<description></description>
 		<servlet-name>MainController</servlet-name>
 		<servlet-class>com.douzone.mysite.controller.MainController
 		</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/WEB-INF/servlet-context.xml</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>MainController</servlet-name>
@@ -45,15 +62,31 @@
 		<servlet-name>GuestbookController</servlet-name>
 		<url-pattern>/guestbook</url-pattern>
 	</servlet-mapping>
-
-	<!-- 공통 error page -->
+	<servlet>
+		<description></description>
+		<display-name>BoardController</display-name>
+		<servlet-name>BoardController</servlet-name>
+		<servlet-class>com.douzone.mysite.controller.BoardController
+		</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BoardController</servlet-name>
+		<url-pattern>/board</url-pattern>
+	</servlet-mapping>
 	<error-page>
 		<error-code>500</error-code>
 		<location>/WEB-INF/views/error/500.jsp</location>
 	</error-page>
-
 	<error-page>
 		<error-code>404</error-code>
 		<location>/WEB-INF/views/error/404.jsp</location>
 	</error-page>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
