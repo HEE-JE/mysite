@@ -66,7 +66,7 @@
 							</c:when>
 							<c:otherwise>
 								<li><a
-									href="${pageContext.servletContext.contextPath }/board?page=${param.page-1 }">◀</a></li>
+									href="${pageContext.request.contextPath }/board?page=${param.page-1 }">◀</a></li>
 							</c:otherwise>
 						</c:choose>
 
@@ -81,7 +81,7 @@
 								</c:when>
 								<c:otherwise>
 									<li><a
-										href="${pageContext.servletContext.contextPath }/board?page=${page }">${page }</a></li>
+										href="${pageContext.request.contextPath }/board?page=${page }">${page }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -89,7 +89,7 @@
 						<c:choose>
 							<c:when test="${param.page != lastPage }">
 								<li><a
-									href="${pageContext.servletContext.contextPath }/board?page=${param.page+1 }">▶</a></li>
+									href="${pageContext.request.contextPath }/board?page=${param.page+1 }">▶</a></li>
 							</c:when>
 							<c:otherwise>
 								<li>▶</li>

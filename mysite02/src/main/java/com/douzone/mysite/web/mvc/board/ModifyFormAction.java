@@ -37,7 +37,7 @@ public class ModifyFormAction implements Action {
 		BoardVo vo = new BoardVo();
 		vo.setNo(no);
 
-		BoardVo boardVo = new BoardRepository().findContents(vo);
+		BoardVo boardVo = new BoardRepository().findByNo(vo);
 
 		request.setAttribute("boardVo", boardVo);
 		WebUtil.forword(request, response, "board/modify");

@@ -36,7 +36,7 @@ public class WriteFormAction implements Action {
 
 		if (no != null) {
 			vo.setNo(Long.parseLong(no));
-			BoardVo boardVo = new BoardRepository().findContents(vo);
+			BoardVo boardVo = new BoardRepository().findByNo(vo);
 
 			request.setAttribute("boardVo", boardVo);
 		}

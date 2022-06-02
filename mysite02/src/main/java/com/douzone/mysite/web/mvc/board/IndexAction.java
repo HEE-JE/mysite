@@ -17,23 +17,19 @@ public class IndexAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String kwd = request.getParameter("page") != null ? request.getParameter("kwd") : null;
+
 		int currentPage = request.getParameter("page") != null ? Integer.parseInt(request.getParameter("page")) : 1;
+		int startPage = 0;
 		int lastPage = 0;
+		int endPage = 0;
 		int count = 0;
 
 		List<BoardVo> list = new ArrayList<>();
-		String kwd = request.getParameter("page") != null ? request.getParameter("kwd") : null;
-		if (request.getParameter("kwd") != null) {
-			list = new BoardRepository().findByKwd(currentPage, kwd);
-			lastPage = (new BoardRepository().countByKwd(kwd) - 1) / 5 + 1;
-			count = new BoardRepository().countByKwd(kwd) - (5 * (currentPage - 1));
-		} else {
-			list = new BoardRepository().findAll(currentPage);
-			lastPage = (new BoardRepository().count() - 1) / 5 + 1;
-			count = new BoardRepository().count() - (5 * (currentPage - 1));
-		}
-		int startPage = 0;
-		int endPage = 0;
+
+		list = new BoardRepository().findAll(currentPage, kwd);
+		lastPage = (new BoardRepository().count(kwd) - 1) / 5 + 1;
+		count = new BoardRepository().count(kwd) - (5 * (currentPage - 1));
 
 		if (currentPage < 4 || lastPage <= 5) {
 			startPage = 1;
@@ -46,10 +42,10 @@ public class IndexAction implements Action {
 			startPage = endPage - 4;
 		}
 
-		request.setAttribute("count", count);
 		request.setAttribute("startPage", startPage);
-		request.setAttribute("endPage", endPage);
 		request.setAttribute("lastPage", lastPage);
+		request.setAttribute("endPage", endPage);
+		request.setAttribute("count", count);
 		request.setAttribute("list", list);
 		WebUtil.forword(request, response, "board/index");
 	}
