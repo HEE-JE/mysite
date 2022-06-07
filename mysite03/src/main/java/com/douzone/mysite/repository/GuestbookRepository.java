@@ -87,6 +87,13 @@ public class GuestbookRepository {
 		return result;
 	}
 
+	public boolean delete(Long no, String password) {
+		GuestbookVo vo = new GuestbookVo();
+		vo.setNo(no);
+		vo.setPassword(password);
+		return delete(vo);
+	}
+
 	public List<GuestbookVo> findAll() {
 		List<GuestbookVo> result = new ArrayList<GuestbookVo>();
 		Connection connection = null;
