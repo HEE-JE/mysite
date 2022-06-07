@@ -42,7 +42,7 @@ public class WriteAction implements Action {
 		BoardVo vo = new BoardVo();
 		vo.setTitle(title);
 		vo.setContents(contents);
-		if (gNo != null) {
+		if (!"".equals(gNo)) {
 			vo.setgNo(Long.parseLong(gNo));
 			vo.setoNo(Long.parseLong(oNo));
 			vo.setDepth(Integer.parseInt(depth));
