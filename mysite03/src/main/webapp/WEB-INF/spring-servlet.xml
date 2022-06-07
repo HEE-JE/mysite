@@ -20,6 +20,16 @@
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
 
+	<!-- ViewResolver 설정 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
+	</bean>
+
 	<!-- 어노테이션 설정: 자동(auto) 빈(Bean) 스캐닝(Scanning) -->
 	<context:annotation-config />
 	<context:component-scan
