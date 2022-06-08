@@ -1,23 +1,28 @@
 package com.douzone.mysite.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.mysite.vo.UserVo;
 
 @Repository
 public class UserRepository {
+	@Autowired
+	private DataSource dataSource;
+
 	public boolean insert(UserVo vo) {
 		boolean result = false;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "insert into user values(null, ?, ?, ?, ?, now())";
@@ -56,7 +61,7 @@ public class UserRepository {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "select no, name from user where email=? and password=?";
@@ -105,7 +110,7 @@ public class UserRepository {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "select no, name, email, gender from user where no=?";
@@ -155,7 +160,7 @@ public class UserRepository {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			if ("".equals(vo.getPassword())) {
 				// 3. SQL 준비
@@ -195,20 +200,5 @@ public class UserRepository {
 			}
 		}
 		return result;
-	}
-
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
-		try {
-			// 1. JDBC Driver(class) 로딩(JDBC Class 로딩: class loader)
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			// 2. 연결하기
-			String url = "jdbc:mysql://192.168.10.52:3306/webdb?charset=utf8";
-			connection = DriverManager.getConnection(url, "webdb", "webdb");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이브 로딩 실패:" + e);
-		}
-		return connection;
 	}
 }

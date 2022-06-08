@@ -1,13 +1,15 @@
 package com.douzone.mysite.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.mysite.exception.GuestbookRepositoryException;
@@ -15,12 +17,15 @@ import com.douzone.mysite.vo.GuestbookVo;
 
 @Repository
 public class GuestbookRepository {
+	@Autowired
+	private DataSource dataSource;
+
 	public boolean insert(GuestbookVo vo) {
 		boolean result = false;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "insert into guestbook values(null, ?, ?, ?, now())";
@@ -58,7 +63,7 @@ public class GuestbookRepository {
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "delete from guestbook where no = ? and password = ?";
@@ -102,7 +107,7 @@ public class GuestbookRepository {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			connection = getConnection();
+			connection = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "select no, name, date_format(reg_date, '%Y-%m-%d %r'), content from guestbook order by no desc";
@@ -142,20 +147,5 @@ public class GuestbookRepository {
 			}
 		}
 		return result;
-	}
-
-	private Connection getConnection() throws SQLException {
-		Connection connection = null;
-		try {
-			// 1. JDBC Driver(class) 로딩(JDBC Class 로딩: class loader)
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			// 2. 연결하기
-			String url = "jdbc:mysql://192.168.10.52:3306/webdb?charset=utf8";
-			connection = DriverManager.getConnection(url, "webdb", "webdb");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이브 로딩 실패:" + e);
-		}
-		return connection;
 	}
 }
