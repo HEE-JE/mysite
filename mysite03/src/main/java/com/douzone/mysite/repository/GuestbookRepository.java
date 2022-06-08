@@ -23,7 +23,7 @@ public class GuestbookRepository {
 			connection = getConnection();
 
 			// 3. SQL 준비
-			String sql = "inser into guestbook values(null, ?, ?, ?, now())";
+			String sql = "insert into guestbook values(null, ?, ?, ?, now())";
 			pstmt = connection.prepareStatement(sql);
 
 			// 4. Mapping(bind)
