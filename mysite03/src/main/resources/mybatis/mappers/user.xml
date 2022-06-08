@@ -10,13 +10,13 @@
 	<select id="findByEmailAndPassword" parameterType="uservo"
 		resultType="uservo">
 		<![CDATA[
-		select no, name from user where email=#{email } and password=#{password }
+			select no, name from user where email=#{email } and password=#{password }
 		]]>
 	</select>
 
 	<select id="findByNo" parameterType="long" resultType="uservo">
 		<![CDATA[
-		select no, name, email, gender from user where no=#{no }
+			select no, name, email, gender from user where no=#{no }
 		]]>
 	</select>
 
@@ -24,12 +24,12 @@
 		<choose>
 			<when test='password == ""'>
 				<![CDATA[
-				update user set name=#{name }, gender=#{gender } where no=#{no }
+					update user set name=#{name }, gender=#{gender } where no=#{no }
 				]]>
 			</when>
 			<otherwise>
 				<![CDATA[
-				update user set name=#{name }, gender=#{gender }, password=#{password } where no=#{no }
+					update user set name=#{name }, gender=#{gender }, password=#{password } where no=#{no }
 				]]>
 			</otherwise>
 		</choose>
