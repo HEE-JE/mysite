@@ -41,4 +41,9 @@ public class GuestbookController {
 		guestbookService.addMessage(vo);
 		return "redirect:/guestbook";
 	}
+
+//	@ExceptionHandler(Exception.class)
+//	public String handlerException() {
+//		return "error/exception";
+//	}
 }
