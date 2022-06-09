@@ -20,6 +20,24 @@
 	<!-- 서블릿 컨테이너의 디폴트 서블릿 위임 핸들러 -->
 	<mvc:default-servlet-handler />
 
+	<!-- MVC Resource Mapping -->
+	<mvc:resources mapping="/assets/gallery/**"
+		location="file:/mysite-uploads/" />
+
+	<!-- Multipart Resolver -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- 최대업로드 가능한 바이트크기 -->
+		<property name="maxUploadSize" value="52428800" />
+
+		<!-- 디스크에 임시 파일을 생성하기 전에 메모리에 보관할수있는 최대 바이트 크기 -->
+		<!-- property name="maxInMemorySize" value="1024000" / -->
+
+		<!-- Default Encoding -->
+		<property name="defaultEncoding" value="utf-8" />
+	</bean>
+
 	<!-- ViewResolver 설정 -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
