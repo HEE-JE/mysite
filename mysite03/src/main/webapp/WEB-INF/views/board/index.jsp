@@ -19,8 +19,7 @@
 			<div id="board">
 				<form id="search_form"
 					action='${pageContext.request.contextPath }/board' method="get">
-					<input type="hidden" id="page" name="page" value="1"> <input
-						type="text" id="kwd" name="kwd" value=""> <input
+					<input type="text" id="kwd" name="kwd" value=""> <input
 						type="submit" value="찾기">
 				</form>
 				<table class="tbl-ex">
@@ -43,14 +42,14 @@
 											src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
 									</c:when>
 								</c:choose><a
-								href="${pageContext.request.contextPath }/board?a=view&no=${vo.no }">${vo.title }</a>
+								href="${pageContext.request.contextPath }/board/view/${vo.no }">${vo.title }</a>
 							</td>
 							<td>${vo.name }</td>
-							<td>${vo.hit }</td>
-							<td>${vo.regDate }</td>
+							<td>${authUser.no }</td>
+							<td>${vo.userNo }</td>
 							<c:if test='${authUser.no == vo.userNo }'>
 								<td><a
-									href="${pageContext.request.contextPath }/board?a=delete&no=${vo.no }"
+									href="${pageContext.request.contextPath }/board/delete/${vo.no }"
 									class="del">삭제</a></td>
 							</c:if>
 						</tr>
@@ -61,35 +60,59 @@
 				<div class="pager">
 					<ul>
 						<c:choose>
-							<c:when test="${param.page == 1 }">
+							<c:when test="${currentPage == 1 }">
 								<li>◀</li>
 							</c:when>
 							<c:otherwise>
-								<li><a
-									href="${pageContext.request.contextPath }/board?page=${param.page-1 }">◀</a></li>
+								<c:choose>
+									<c:when test="${empty kwd  }">
+										<li><a
+											href="${pageContext.request.contextPath }/board?p=${currentPage-1 }">◀</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a
+											href="${pageContext.request.contextPath }/board?p=${currentPage-1 }&kwd=${kwd }">◀</a></li>
+									</c:otherwise>
+								</c:choose>
 							</c:otherwise>
 						</c:choose>
 
 						<c:forEach begin="${startPage }" end="${endPage }" var="page"
 							step="1">
 							<c:choose>
-								<c:when test="${param.page == page }">
+								<c:when test="${currentPage == page }">
 									<li class="selected">${page }</li>
 								</c:when>
 								<c:when test="${page > lastPage }">
 									<li>${page }</li>
 								</c:when>
 								<c:otherwise>
-									<li><a
-										href="${pageContext.request.contextPath }/board?page=${page }">${page }</a></li>
+									<c:choose>
+										<c:when test="${empty kwd }">
+											<li><a
+												href="${pageContext.request.contextPath }/board?p=${page }">${page }</a></li>
+										</c:when>
+										<c:otherwise>
+											<li><a
+												href="${pageContext.request.contextPath }/board?p=${page }&kwd=${kwd }">${page }</a></li>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 
 						<c:choose>
-							<c:when test="${param.page != lastPage }">
-								<li><a
-									href="${pageContext.request.contextPath }/board?page=${param.page+1 }">▶</a></li>
+							<c:when test="${currentPage != lastPage }">
+								<c:choose>
+									<c:when test="${empty kwd }">
+										<li><a
+											href="${pageContext.request.contextPath }/board?p=${currentPage+1 }">▶</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a
+											href="${pageContext.request.contextPath }/board?p=${currentPage+1 }&kwd=${kwd }">▶</a></li>
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:otherwise>
 								<li>▶</li>
@@ -101,7 +124,7 @@
 
 				<c:if test='${not empty authUser }'>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=writeform"
+						<a href="${pageContext.request.contextPath }/board/write"
 							id="new-book">글쓰기</a>
 					</div>
 				</c:if>

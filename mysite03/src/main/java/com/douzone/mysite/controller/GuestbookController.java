@@ -14,6 +14,7 @@ import com.douzone.mysite.vo.GuestbookVo;
 @Controller
 @RequestMapping("/guestbook")
 public class GuestbookController {
+	
 	@Autowired
 	private GuestbookService guestbookService;
 

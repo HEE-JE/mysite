@@ -8,7 +8,7 @@ public class BoardVo {
 	private String regDate;
 	private Long gNo;
 	private Long oNo;
-	private int depth;
+	private Integer depth;
 	private Long userNo;
 
 	private String name;
@@ -69,11 +69,11 @@ public class BoardVo {
 		this.oNo = oNo;
 	}
 
-	public int getDepth() {
+	public Integer getDepth() {
 		return depth;
 	}
 
-	public void setDepth(int depth) {
+	public void setDepth(Integer depth) {
 		this.depth = depth;
 	}
 
