@@ -45,8 +45,8 @@
 								href="${pageContext.request.contextPath }/board/view/${vo.no }">${vo.title }</a>
 							</td>
 							<td>${vo.name }</td>
-							<td>${authUser.no }</td>
-							<td>${vo.userNo }</td>
+							<td>${vo.hit }</td>
+							<td>${vo.regDate }</td>
 							<c:if test='${authUser.no == vo.userNo }'>
 								<td><a
 									href="${pageContext.request.contextPath }/board/delete/${vo.no }"
