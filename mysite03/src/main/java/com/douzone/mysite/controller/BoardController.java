@@ -1,10 +1,12 @@
 package com.douzone.mysite.controller;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,22 +26,23 @@ public class BoardController {
 	@RequestMapping("")
 	public String index(@RequestParam(value = "p", required = true, defaultValue = "1") int page,
 			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd, Model model) {
-		int lastPage = (boardService.totalCount(kwd) - 1) / 5 + 1;
 
 		model.addAttribute("currentPage", page);
-		model.addAttribute("list", boardService.getPageList(page, kwd));
-		model.addAttribute("count", boardService.totalCount(kwd) - (5 * (page - 1)));
-		model.addAttribute("startPage", boardService.getPage(page, lastPage).get("startPage"));
-		model.addAttribute("endPage", boardService.getPage(page, lastPage).get("endPage"));
-		model.addAttribute("lastPage", lastPage);
 		model.addAttribute("kwd", kwd);
+		model.addAttribute("list", boardService.getPageList(page, kwd));
+		model.addAttribute("count", boardService.getPage(page, kwd).get("count"));
+		model.addAttribute("startPage", boardService.getPage(page, kwd).get("startPage"));
+		model.addAttribute("endPage", boardService.getPage(page, kwd).get("endPage"));
+		model.addAttribute("lastPage", boardService.getPage(page, kwd).get("lastPage"));
 		return "board/index";
 	}
 
 	@RequestMapping("/view/{no}")
-	public String view(@PathVariable("no") Long no, Model model) {
+	public String view(HttpServletResponse response,
+			@CookieValue(value = "hit", required = true, defaultValue = "") String cookieHit,
+			@PathVariable("no") Long no, Model model) {
 		BoardVo vo = boardService.getContents(no);
-		boardService.updateHit(no);
+		boardService.updateHit(response, cookieHit, no);
 		model.addAttribute("boardVo", vo);
 		return "board/view";
 	}

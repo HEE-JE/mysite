@@ -43,7 +43,7 @@
 
 	<select id="findByNo" parameterType="long" resultType="boardvo">
 		<![CDATA[
-			select no, title, contents, g_no as gNo, o_no as oNo, depth, user_no from board where no=#{no }
+			select no, title, contents, g_no as gNo, o_no as oNo, depth, user_no as userNo from board where no=#{no }
 		]]>
 	</select>
 

@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ public class BoardService {
 	@Autowired
 	private BoardRepository boardRepository;
 
+	private static final String COOKIE_NAME = "hit";
+
 	public List<BoardVo> getPageList(int page, String kwd) {
 		return boardRepository.findAll(page, kwd);
 	}
@@ -24,9 +29,11 @@ public class BoardService {
 		return boardRepository.totalCount(kwd);
 	}
 
-	public Map<String, Integer> getPage(int page, int lastPage) {
+	public Map<String, Integer> getPage(int page, String kwd) {
 		Map<String, Integer> map = new HashMap<>();
 
+		int count = totalCount(kwd) - (5 * (page - 1));
+		int lastPage = (totalCount(kwd) - 1) / 5 + 1;
 		int startPage = 0, endPage = 0;
 		if (page < 4 || lastPage <= 5) {
 			startPage = 1;
@@ -39,8 +46,10 @@ public class BoardService {
 			startPage = endPage - 4;
 		}
 
+		map.put("count", count);
 		map.put("startPage", startPage);
 		map.put("endPage", endPage);
+		map.put("lastPage", lastPage);
 		return map;
 	}
 
@@ -64,8 +73,30 @@ public class BoardService {
 		boardRepository.insert(vo);
 	}
 
-	public void updateHit(Long no) {
-		// 쿠키처리
-		boardRepository.updateHit(no);
+	public void updateHit(HttpServletResponse response, String cookieHit, Long no) {
+		if ("".equals(cookieHit)) {
+			makeCookie(response, String.valueOf(no));
+		} else {
+			boolean check = false;
+			String[] numbers = cookieHit.split("/");
+			for (String number : numbers) {
+				if (number.equals(String.valueOf(no))) {
+					check = true;
+					break;
+				}
+			}
+
+			if (!check) {
+				makeCookie(response, (cookieHit + no));
+				boardRepository.updateHit(no);
+			}
+		}
+	}
+
+	public void makeCookie(HttpServletResponse response, String cookieHit) {
+		Cookie cookie = new Cookie(COOKIE_NAME, cookieHit + "/");
+		cookie.setPath("/");
+		cookie.setMaxAge(24 * 60 * 60); // 1day
+		response.addCookie(cookie);
 	}
 }
