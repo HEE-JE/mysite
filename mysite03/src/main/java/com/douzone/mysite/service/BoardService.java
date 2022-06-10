@@ -20,12 +20,12 @@ public class BoardService {
 	@Autowired
 	private BoardRepository boardRepository;
 
-	public List<BoardVo> getPageList(int page, String kwd) {
+	public List<BoardVo> findAll(int page, String kwd) {
 		return boardRepository.findAll(page, kwd);
 	}
 
-	public Map<String, Integer> getPage(int page, String kwd) {
-		Map<String, Integer> map = new HashMap<>();
+	public Map<String, Object> getPageAndList(int page, String kwd) {
+		Map<String, Object> map = new HashMap<>();
 
 		int count = totalCount(kwd) - (5 * (page - 1));
 		int lastPage = (totalCount(kwd) - 1) / 5 + 1;
@@ -41,6 +41,9 @@ public class BoardService {
 			startPage = endPage - 4;
 		}
 
+		map.put("currentPage", page);
+		map.put("kwd", kwd);
+		map.put("list", findAll(page, kwd));
 		map.put("count", count);
 		map.put("startPage", startPage);
 		map.put("endPage", endPage);

@@ -31,9 +31,9 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:forEach items='${list }' var='vo' varStatus='status'>
+					<c:forEach items='${map.list }' var='vo' varStatus='status'>
 						<tr>
-							<td>${count - status.index }</td>
+							<td>${map.count - status.index }</td>
 
 							<td style='text-align: left; padding-left: ${(vo.depth-1)*10}px'>
 								<c:choose>
@@ -60,41 +60,41 @@
 				<div class="pager">
 					<ul>
 						<c:choose>
-							<c:when test="${currentPage == 1 }">
+							<c:when test="${map.currentPage == 1 }">
 								<li>◀</li>
 							</c:when>
 							<c:otherwise>
 								<c:choose>
-									<c:when test="${empty kwd  }">
+									<c:when test="${empty map.kwd  }">
 										<li><a
-											href="${pageContext.request.contextPath }/board?p=${currentPage-1 }">◀</a></li>
+											href="${pageContext.request.contextPath }/board?p=${map.currentPage-1 }">◀</a></li>
 									</c:when>
 									<c:otherwise>
 										<li><a
-											href="${pageContext.request.contextPath }/board?p=${currentPage-1 }&kwd=${kwd }">◀</a></li>
+											href="${pageContext.request.contextPath }/board?p=${map.currentPage-1 }&kwd=${map.kwd }">◀</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:otherwise>
 						</c:choose>
 
-						<c:forEach begin="${startPage }" end="${endPage }" var="page"
-							step="1">
+						<c:forEach begin="${map.startPage }" end="${map.endPage }"
+							var="page" step="1">
 							<c:choose>
-								<c:when test="${currentPage == page }">
+								<c:when test="${map.currentPage == page }">
 									<li class="selected">${page }</li>
 								</c:when>
-								<c:when test="${page > lastPage }">
+								<c:when test="${page > map.lastPage }">
 									<li>${page }</li>
 								</c:when>
 								<c:otherwise>
 									<c:choose>
-										<c:when test="${empty kwd }">
+										<c:when test="${empty map.kwd }">
 											<li><a
 												href="${pageContext.request.contextPath }/board?p=${page }">${page }</a></li>
 										</c:when>
 										<c:otherwise>
 											<li><a
-												href="${pageContext.request.contextPath }/board?p=${page }&kwd=${kwd }">${page }</a></li>
+												href="${pageContext.request.contextPath }/board?p=${page }&kwd=${map.kwd }">${page }</a></li>
 										</c:otherwise>
 									</c:choose>
 								</c:otherwise>
@@ -102,15 +102,15 @@
 						</c:forEach>
 
 						<c:choose>
-							<c:when test="${currentPage != lastPage }">
+							<c:when test="${map.currentPage != map.lastPage }">
 								<c:choose>
-									<c:when test="${empty kwd }">
+									<c:when test="${empty map.kwd }">
 										<li><a
-											href="${pageContext.request.contextPath }/board?p=${currentPage+1 }">▶</a></li>
+											href="${pageContext.request.contextPath }/board?p=${map.currentPage+1 }">▶</a></li>
 									</c:when>
 									<c:otherwise>
 										<li><a
-											href="${pageContext.request.contextPath }/board?p=${currentPage+1 }&kwd=${kwd }">▶</a></li>
+											href="${pageContext.request.contextPath }/board?p=${map.currentPage+1 }&kwd=${map.kwd }">▶</a></li>
 									</c:otherwise>
 								</c:choose>
 							</c:when>

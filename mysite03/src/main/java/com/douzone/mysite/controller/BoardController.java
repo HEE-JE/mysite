@@ -1,5 +1,7 @@
 package com.douzone.mysite.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -24,16 +26,11 @@ public class BoardController {
 	private BoardService boardService;
 
 	@RequestMapping("")
-	public String index(@RequestParam(value = "p", required = true, defaultValue = "1") int page,
+	public String index(@RequestParam(value = "p", required = true, defaultValue = "1") Integer page,
 			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd, Model model) {
 
-		model.addAttribute("currentPage", page);
-		model.addAttribute("kwd", kwd);
-		model.addAttribute("list", boardService.getPageList(page, kwd));
-		model.addAttribute("count", boardService.getPage(page, kwd).get("count"));
-		model.addAttribute("startPage", boardService.getPage(page, kwd).get("startPage"));
-		model.addAttribute("endPage", boardService.getPage(page, kwd).get("endPage"));
-		model.addAttribute("lastPage", boardService.getPage(page, kwd).get("lastPage"));
+		Map<String, Object> map = boardService.getPageAndList(page, kwd);
+		model.addAttribute("map", map);
 		return "board/index";
 	}
 
