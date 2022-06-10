@@ -43,6 +43,6 @@ public class GalleryController {
 	@RequestMapping("/delete/{no}")
 	public String remove(@PathVariable("no") Long no) {
 		galleryService.removeImage(no);
-		return "gallery/index";
+		return "redirect:/gallery";
 	}
 }
