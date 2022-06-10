@@ -15,18 +15,13 @@ import com.douzone.mysite.vo.BoardVo;
 
 @Service
 public class BoardService {
+	private static final String COOKIE_NAME = "hit";
 
 	@Autowired
 	private BoardRepository boardRepository;
 
-	private static final String COOKIE_NAME = "hit";
-
 	public List<BoardVo> getPageList(int page, String kwd) {
 		return boardRepository.findAll(page, kwd);
-	}
-
-	public int totalCount(String kwd) {
-		return boardRepository.totalCount(kwd);
 	}
 
 	public Map<String, Integer> getPage(int page, String kwd) {
@@ -53,12 +48,20 @@ public class BoardService {
 		return map;
 	}
 
+	public int totalCount(String kwd) {
+		return boardRepository.totalCount(kwd);
+	}
+
 	public BoardVo getContents(Long no) {
 		BoardVo result = null;
 		if (no != null) {
 			result = boardRepository.findByNo(no);
 		}
 		return result;
+	}
+
+	public void write(BoardVo vo) {
+		boardRepository.insert(vo);
 	}
 
 	public void updateContents(BoardVo vo) {
@@ -69,34 +72,22 @@ public class BoardService {
 		boardRepository.delete(no);
 	}
 
-	public void write(BoardVo vo) {
-		boardRepository.insert(vo);
-	}
-
 	public void updateHit(HttpServletResponse response, String cookieHit, Long no) {
-		if ("".equals(cookieHit)) {
-			makeCookie(response, String.valueOf(no));
-		} else {
-			boolean check = false;
-			String[] numbers = cookieHit.split("/");
-			for (String number : numbers) {
-				if (number.equals(String.valueOf(no))) {
-					check = true;
-					break;
-				}
-			}
-
-			if (!check) {
-				makeCookie(response, (cookieHit + no));
-				boardRepository.updateHit(no);
+		boolean check = false;
+		String[] numbers = cookieHit.split("/");
+		for (String number : numbers) {
+			if (number.equals(String.valueOf(no))) {
+				check = true;
+				break;
 			}
 		}
-	}
 
-	public void makeCookie(HttpServletResponse response, String cookieHit) {
-		Cookie cookie = new Cookie(COOKIE_NAME, cookieHit + "/");
-		cookie.setPath("/");
-		cookie.setMaxAge(24 * 60 * 60); // 1day
-		response.addCookie(cookie);
+		if (!check) {
+			Cookie cookie = new Cookie(COOKIE_NAME, cookieHit + no + "/");
+			cookie.setPath("/");
+			cookie.setMaxAge(24 * 60 * 60); // 1day
+			response.addCookie(cookie);
+			boardRepository.updateHit(no);
+		}
 	}
 }

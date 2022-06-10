@@ -17,10 +17,11 @@ public class BoardRepository {
 	private SqlSession sqlSession;
 
 	public boolean insert(BoardVo vo) {
-		boolean result = sqlSession.insert("board.insert", vo) == 1;
+		boolean result = false;
 		if (vo.getgNo() != null) {
-			result = sqlSession.update("board.updateoNo", vo) == 1;
+			result = sqlSession.update("board.updateOrderNo", vo) == 1;
 		}
+		result = sqlSession.insert("board.insert", vo) == 1;
 		return result;
 	}
 

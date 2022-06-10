@@ -5,7 +5,7 @@
 		<choose>
 			<when test='kwd == ""'>
 				<![CDATA[
-					select a.no, a.title, b.name, a.hit, date_format(a.reg_date, '%Y-%m-%d %r') as regDate, a.g_no, a.o_no, a.depth, a.user_no as userNo
+					select a.no, a.title, b.name, a.hit, date_format(a.reg_date, '%Y-%m-%d %r') as regDate, a.g_no as gNo, a.o_no as oNo, a.depth, a.user_no as userNo
 						from board a, user b
 						where a.user_no = b.no
 				  	 	order by g_no desc, o_no asc limit #{page }, 5
@@ -13,7 +13,7 @@
 			</when>
 			<otherwise>
 				<![CDATA[
-					select a.no, a.title, b.name, a.hit, date_format(a.reg_date, '%Y-%m-%d %r') as regDate, a.g_no, a.o_no, a.depth, a.user_no as userNo
+					select a.no, a.title, b.name, a.hit, date_format(a.reg_date, '%Y-%m-%d %r') as regDate, a.g_no as gNo, a.o_no as oNo, a.depth, a.user_no as userNo
 						from board a, user b
 						where a.user_no = b.no
 						and (a.title like '%${kwd }%' or b.name like '%${kwd }%')
@@ -47,13 +47,12 @@
 		]]>
 	</select>
 
-	<select id="insert" parameterType="boardvo">
+	<insert id="insert" parameterType="boardvo">
 		<choose>
 			<when test='gNo != null'>
 				<![CDATA[
-					insert into board values(null, #{title }, #{contents }, 0, now(), #{gNo }, #{oNo } + 1, #{depth } + 1, #{userNo })
+					insert into board values(null, #{title }, #{contents }, 0, now(), #{gNo }, (#{oNo } + 1), (#{depth } + 1), #{userNo })
 				]]>
-
 			</when>
 			<otherwise>
 				<![CDATA[
@@ -61,29 +60,29 @@
 				]]>
 			</otherwise>
 		</choose>
-	</select>
+	</insert>
 
-	<select id="updateoNo" parameterType="boardvo">
+	<update id="updateOrderNo" parameterType="boardvo">
 			<![CDATA[
-				update board set o_no = o_no + 1 where g_no=#{gNo } and o_no >= (#{oNo } + 1)
+				update board set o_no = o_no + 1 where g_no=#{gNo } and o_no > #{oNo }
 			]]>
-	</select>
+	</update>
 
-	<select id="update" parameterType="boardvo">
+	<update id="update" parameterType="boardvo">
 			<![CDATA[
 				update board set title=#{title }, contents=#{contents } where no=#{no }
 			]]>
-	</select>
+	</update>
 
-	<select id="delete" parameterType="long">
+	<delete id="delete" parameterType="long">
 			<![CDATA[
 				delete from board where no = #{no }
 			]]>
-	</select>
+	</delete>
 
-	<select id="updateHit" parameterType="long">
+	<update id="updateHit" parameterType="long">
 			<![CDATA[
 				update board set hit = hit + 1 where no = #{no }
 			]]>
-	</select>
+	</update>
 </mapper>
