@@ -108,7 +108,7 @@ public class BoardController {
 		}
 		///////////////////////////
 
-		boardService.delete(no);
+		boardService.delete(no, authUser.getNo());
 		return "redirect:/board";
 	}
 }

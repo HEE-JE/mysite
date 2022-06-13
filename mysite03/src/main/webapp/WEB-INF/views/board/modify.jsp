@@ -34,8 +34,9 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board">취소</a> <input
-							type="submit" value="수정">
+						<a
+							href="${pageContext.request.contextPath }/board?p=${param.p }&kwd=${param.kwd }">취소</a>
+						<input type="submit" value="수정">
 					</div>
 				</form>
 			</div>

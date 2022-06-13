@@ -64,6 +64,9 @@ public class BoardService {
 	}
 
 	public void write(BoardVo vo) {
+		if (vo.getgNo() != null) {
+			boardRepository.updateOrderNo(vo);
+		}
 		boardRepository.insert(vo);
 	}
 
@@ -71,8 +74,8 @@ public class BoardService {
 		boardRepository.update(vo);
 	}
 
-	public void delete(Long no) {
-		boardRepository.delete(no);
+	public void delete(Long no, Long userNo) {
+		boardRepository.delete(no, userNo);
 	}
 
 	public void updateHit(HttpServletResponse response, String cookieHit, Long no) {

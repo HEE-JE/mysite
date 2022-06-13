@@ -17,16 +17,18 @@ public class BoardRepository {
 	private SqlSession sqlSession;
 
 	public boolean insert(BoardVo vo) {
-		boolean result = false;
-		if (vo.getgNo() != null) {
-			result = sqlSession.update("board.updateOrderNo", vo) == 1;
-		}
-		result = sqlSession.insert("board.insert", vo) == 1;
-		return result;
+		return sqlSession.insert("board.insert", vo) == 1;
 	}
 
-	public boolean delete(Long no) {
-		return sqlSession.delete("board.delete", no) == 1;
+	public boolean updateOrderNo(BoardVo vo) {
+		return sqlSession.update("board.updateOrderNo", vo) == 1;
+	}
+
+	public boolean delete(Long no, Long userNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("userNo", userNo);
+		return sqlSession.delete("board.delete", map) == 1;
 	}
 
 	public boolean update(BoardVo vo) {

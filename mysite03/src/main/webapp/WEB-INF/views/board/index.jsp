@@ -42,7 +42,7 @@
 											src='${pageContext.servletContext.contextPath }/assets/images/reply.png' />
 									</c:when>
 								</c:choose><a
-								href="${pageContext.request.contextPath }/board/view/${vo.no }">${vo.title }</a>
+								href="${pageContext.request.contextPath }/board/view/${vo.no }?p=${map.currentPage }&kwd=${map.kwd }">${vo.title }</a>
 							</td>
 							<td>${vo.name }</td>
 							<td>${vo.hit }</td>
@@ -124,7 +124,8 @@
 
 				<c:if test='${not empty authUser }'>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board/write"
+						<a
+							href="${pageContext.request.contextPath }/board/write?p=${map.currentPage }&kwd=${map.kwd }"
 							id="new-book">글쓰기</a>
 					</div>
 				</c:if>

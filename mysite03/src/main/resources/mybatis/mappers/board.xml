@@ -76,7 +76,7 @@
 
 	<delete id="delete" parameterType="long">
 			<![CDATA[
-				delete from board where no = #{no }
+				delete from board where no = #{no } and user_no = #{userNo}
 			]]>
 	</delete>
 
