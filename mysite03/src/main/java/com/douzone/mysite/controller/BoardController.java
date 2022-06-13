@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.douzone.mysite.security.Auth;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
@@ -44,69 +45,43 @@ public class BoardController {
 		return "board/view";
 	}
 
+	@Auth
 	@RequestMapping(value = { "/write", "/write/{no}" }, method = RequestMethod.GET)
-	public String write(HttpSession session, @PathVariable(value = "no", required = false) Long no, Model model) {
-		// 접근제어(Access Control)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		///////////////////////////
-
+	public String write(@PathVariable(value = "no", required = false) Long no, Model model) {
 		BoardVo vo = boardService.getContents(no);
 		model.addAttribute("boardVo", vo);
 		return "board/write";
 	}
 
+	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
 	public String write(HttpSession session, BoardVo vo) {
-		// 접근제어(Access Control)
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		///////////////////////////
-
 		vo.setUserNo(authUser.getNo());
+
 		boardService.write(vo);
 		return "redirect:/board";
 	}
 
+	@Auth
 	@RequestMapping(value = "/modify/{no}", method = RequestMethod.GET)
-	public String modify(HttpSession session, @PathVariable("no") Long no, Model model) {
-		// 접근제어(Access Control)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		///////////////////////////
-
+	public String modify(@PathVariable("no") Long no, Model model) {
 		BoardVo vo = boardService.getContents(no);
 		model.addAttribute("boardVo", vo);
 		return "board/modify";
 	}
 
+	@Auth
 	@RequestMapping(value = "/modify/{no}", method = RequestMethod.POST)
-	public String modify(HttpSession session, @PathVariable("no") Long no, BoardVo vo) {
-		// 접근제어(Access Control)
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		///////////////////////////
-
+	public String modify(@PathVariable("no") Long no, BoardVo vo) {
 		boardService.updateContents(vo);
 		return "redirect:/board/view/{no}";
 	}
 
+	@Auth
 	@RequestMapping("/delete/{no}")
 	public String delete(HttpSession session, @PathVariable("no") Long no, BoardVo vo) {
-		// 접근제어(Access Control)
 		UserVo authUser = (UserVo) session.getAttribute("authUser");
-		if (authUser == null) {
-			return "redirect:/";
-		}
-		///////////////////////////
 
 		boardService.delete(no, authUser.getNo());
 		return "redirect:/board";
