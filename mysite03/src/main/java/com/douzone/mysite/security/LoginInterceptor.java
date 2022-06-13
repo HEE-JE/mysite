@@ -24,10 +24,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 		if (authUser == null) {
 			request.setAttribute("email", email);
 			request.setAttribute("result", "fail");
-			request.getRequestDispatcher("WEB-INF/views/user/login.jsp");
+			request.getRequestDispatcher("WEB-INF/views/user/login.jsp").forward(request, response);
 			return false;
 		}
-		
+
 		/* session 처리 */
 		System.out.println(authUser);
 		return false;
