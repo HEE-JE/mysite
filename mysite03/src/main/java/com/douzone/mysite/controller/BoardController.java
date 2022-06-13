@@ -3,7 +3,6 @@ package com.douzone.mysite.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.douzone.mysite.security.Auth;
+import com.douzone.mysite.security.AuthUser;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
@@ -55,10 +55,8 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(HttpSession session, BoardVo vo) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
+	public String write(@AuthUser UserVo authUser, BoardVo vo) {
 		vo.setUserNo(authUser.getNo());
-
 		boardService.write(vo);
 		return "redirect:/board";
 	}
@@ -80,9 +78,7 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping("/delete/{no}")
-	public String delete(HttpSession session, @PathVariable("no") Long no, BoardVo vo) {
-		UserVo authUser = (UserVo) session.getAttribute("authUser");
-
+	public String delete(@AuthUser UserVo authUser, @PathVariable("no") Long no, BoardVo vo) {
 		boardService.delete(no, authUser.getNo());
 		return "redirect:/board";
 	}
