@@ -32,7 +32,7 @@ public class GalleryController {
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String upload(@RequestParam(value = "comments", required = true, defaultValue = "") String comments,
 			@RequestParam("file") MultipartFile multipartfile) {
-		String url = fileUploadService.restore(multipartfile);
+		String url = fileUploadService.restoreImage(multipartfile);
 		GalleryVo vo = new GalleryVo();
 		vo.setUrl(url);
 		vo.setComments(comments);

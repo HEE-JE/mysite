@@ -9,38 +9,37 @@ import java.util.Calendar;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.douzone.mysite.exception.FileUploadException;
+
 @Service
 public class FileUploadService {
-	private static String RESTORE_PATH = "/mysite-uploads";
+	private static String SAVE_PATH = "/mysite-uploads";
 	private static String URL_BASE = "/assets/gallery";
 
-	public String restore(MultipartFile multipartfile) {
-		String url = null;
-
+	public String restoreImage(MultipartFile multipartfile) throws FileUploadException {
 		try {
-			if (multipartfile.isEmpty()) {
-				return url;
+			File uploadDirectory = new File(SAVE_PATH);
+			if (!uploadDirectory.exists()) {
+				uploadDirectory.mkdirs();
 			}
 
-			File restoreDirectory = new File(RESTORE_PATH);
-			if (!restoreDirectory.exists()) {
-				restoreDirectory.mkdirs();
+			if (multipartfile.isEmpty()) {
+				return null;
 			}
 
 			String originFileName = multipartfile.getOriginalFilename();
 			String extName = originFileName.substring(originFileName.lastIndexOf('.') + 1);
-			String restoreFileName = generateSaveFileName(extName);
+			String saveFileName = generateSaveFileName(extName);
 
 			byte[] data = multipartfile.getBytes();
-			OutputStream os = new FileOutputStream(RESTORE_PATH + "/" + restoreFileName);
+			OutputStream os = new FileOutputStream(SAVE_PATH + "/" + saveFileName);
 			os.write(data);
 			os.close();
 
-			url = URL_BASE + "/" + restoreFileName;
+			return URL_BASE + "/" + saveFileName;
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new FileUploadException("file upload error:" + e);
 		}
-		return url;
 	}
 
 	private String generateSaveFileName(String extName) {
