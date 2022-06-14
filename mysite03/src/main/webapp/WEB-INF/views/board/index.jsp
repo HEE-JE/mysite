@@ -49,7 +49,7 @@
 							<td>${vo.regDate }</td>
 							<c:if test='${authUser.no == vo.userNo }'>
 								<td><a
-									href="${pageContext.request.contextPath }/board/delete/${vo.no }"
+									href="${pageContext.request.contextPath }/board/delete/${vo.no }?p=${map.currentPage }&kwd=${map.kwd }"
 									class="del">삭제</a></td>
 							</c:if>
 						</tr>

@@ -21,6 +21,7 @@ public class BoardService {
 	private BoardRepository boardRepository;
 
 	public List<BoardVo> findAll(int page, String kwd) {
+		page = (page - 1) * 5;
 		return boardRepository.findAll(page, kwd);
 	}
 
@@ -63,7 +64,11 @@ public class BoardService {
 		return result;
 	}
 
-	public void write(BoardVo vo) {
+	public BoardVo getContents(Long no, Long userNo) {
+		return boardRepository.findByNoAndUserNo(no, userNo);
+	}
+
+	public void addContents(BoardVo vo) {
 		if (vo.getgNo() != null) {
 			boardRepository.updateOrderNo(vo);
 		}
@@ -74,7 +79,7 @@ public class BoardService {
 		boardRepository.update(vo);
 	}
 
-	public void delete(Long no, Long userNo) {
+	public void deleteContents(Long no, Long userNo) {
 		boardRepository.delete(no, userNo);
 	}
 
@@ -96,4 +101,5 @@ public class BoardService {
 			boardRepository.updateHit(no);
 		}
 	}
+
 }

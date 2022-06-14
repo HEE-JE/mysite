@@ -18,6 +18,7 @@ import com.douzone.mysite.security.AuthUser;
 import com.douzone.mysite.service.BoardService;
 import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
+import com.douzone.mysite.web.WebUtil;
 
 @Controller
 @RequestMapping("/board")
@@ -29,7 +30,6 @@ public class BoardController {
 	@RequestMapping("")
 	public String index(@RequestParam(value = "p", required = true, defaultValue = "1") Integer page,
 			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd, Model model) {
-
 		Map<String, Object> map = boardService.getPageAndList(page, kwd);
 		model.addAttribute("map", map);
 		return "board/index";
@@ -39,9 +39,8 @@ public class BoardController {
 	public String view(HttpServletResponse response,
 			@CookieValue(value = "hit", required = true, defaultValue = "") String cookieHit,
 			@PathVariable("no") Long no, Model model) {
-		BoardVo vo = boardService.getContents(no);
 		boardService.updateHit(response, cookieHit, no);
-		model.addAttribute("boardVo", vo);
+		model.addAttribute("boardVo", boardService.getContents(no));
 		return "board/view";
 	}
 
@@ -55,31 +54,38 @@ public class BoardController {
 
 	@Auth
 	@RequestMapping(value = "/write", method = RequestMethod.POST)
-	public String write(@AuthUser UserVo authUser, BoardVo vo) {
+	public String write(@AuthUser UserVo authUser, BoardVo vo,
+			@RequestParam(value = "p", required = true, defaultValue = "1") Integer page,
+			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
 		vo.setUserNo(authUser.getNo());
-		boardService.write(vo);
-		return "redirect:/board";
+		boardService.addContents(vo);
+		return "redirect:/board?p=" + page + "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
 	}
 
 	@Auth
 	@RequestMapping(value = "/modify/{no}", method = RequestMethod.GET)
-	public String modify(@PathVariable("no") Long no, Model model) {
-		BoardVo vo = boardService.getContents(no);
+	public String modify(@AuthUser UserVo authUser, @PathVariable("no") Long no, Model model) {
+		BoardVo vo = boardService.getContents(no, authUser.getNo());
 		model.addAttribute("boardVo", vo);
 		return "board/modify";
 	}
 
 	@Auth
-	@RequestMapping(value = "/modify/{no}", method = RequestMethod.POST)
-	public String modify(@PathVariable("no") Long no, BoardVo vo) {
-		boardService.updateContents(vo);
-		return "redirect:/board/view/{no}";
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modify(@AuthUser UserVo authUser, BoardVo boardVo,
+			@RequestParam(value = "p", required = true, defaultValue = "1") Integer page,
+			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
+		boardVo.setUserNo(authUser.getNo());
+		boardService.updateContents(boardVo);
+		return "redirect:/board/view/" + boardVo.getNo() + "?p=" + page + "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
 	}
 
 	@Auth
 	@RequestMapping("/delete/{no}")
-	public String delete(@AuthUser UserVo authUser, @PathVariable("no") Long no, BoardVo vo) {
-		boardService.delete(no, authUser.getNo());
-		return "redirect:/board";
+	public String delete(@AuthUser UserVo authUser, @PathVariable("no") Long no, @PathVariable("no") Long boardNo,
+			@RequestParam(value = "p", required = true, defaultValue = "1") Integer page,
+			@RequestParam(value = "kwd", required = true, defaultValue = "") String kwd) {
+		boardService.deleteContents(no, authUser.getNo());
+		return "redirect:/board?p=" + page + "&kwd=" + WebUtil.encodeURL(kwd, "UTF-8");
 	}
 }

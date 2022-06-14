@@ -36,12 +36,9 @@ public class BoardRepository {
 	}
 
 	public List<BoardVo> findAll(int page, String kwd) {
-		page = (page - 1) * 5;
-
 		Map<String, Object> map = new HashMap<>();
 		map.put("page", page);
 		map.put("kwd", kwd);
-
 		return sqlSession.selectList("board.findAll", map);
 	}
 
@@ -53,7 +50,15 @@ public class BoardRepository {
 		return sqlSession.selectOne("board.findByNo", no);
 	}
 
+	public BoardVo findByNoAndUserNo(Long no, Long userNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("no", no);
+		map.put("userNo", userNo);
+		return sqlSession.selectOne("board.findByNoAndUserNo", map);
+	}
+
 	public boolean updateHit(Long no) {
 		return sqlSession.update("board.updateHit", no) == 1;
 	}
+
 }
