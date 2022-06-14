@@ -21,7 +21,9 @@
 					action="${pageContext.request.contextPath }/board/write">
 					<input type="hidden" name="gNo" value="${boardVo.gNo }"> <input
 						type="hidden" name="oNo" value="${boardVo.oNo }"> <input
-						type="hidden" name="depth" value="${boardVo.depth }">
+						type="hidden" name="depth" value="${boardVo.depth }"> <input
+						type="hidden" name="p" value="${param.p }" /> <input
+						type="hidden" name="kwd" value="${param.kwd }" />
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글쓰기</th>

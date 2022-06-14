@@ -49,7 +49,7 @@
 			<mvc:exclude-mapping path="/assets/**" />
 			<mvc:exclude-mapping path="/user/auth" />
 			<mvc:exclude-mapping path="/user/logout" />
-			<bean class="com.douzone.mysite.security.SiteInterceptor" />
+			<bean class="com.douzone.mysite.interceptor.SiteInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 

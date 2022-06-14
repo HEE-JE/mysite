@@ -1,4 +1,4 @@
-package com.douzone.mysite.security;
+package com.douzone.mysite.interceptor;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +20,8 @@ public class SiteInterceptor implements HandlerInterceptor {
 			throws Exception {
 		ServletContext sc = request.getServletContext();
 		if (sc.getAttribute("site") == null) {
-			SiteVo vo = siteService.getSite();
-			sc.setAttribute("site", vo);
-			response.sendRedirect(request.getContextPath());
-			return false;
+			SiteVo siteVo = siteService.getSite();
+			sc.setAttribute("site", siteVo);
 		}
 		return true;
 	}
