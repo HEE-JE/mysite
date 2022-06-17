@@ -21,7 +21,7 @@ public class FileuploadConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler(env.getProperty("fileupload.resourceMapping"))
-				.addResourceLocations(env.getProperty("fileupload.uploadLocation"));
+				.addResourceLocations("file:" + env.getProperty("fileupload.uploadLocation"));
 	}
 
 	// Multipart Resolver
@@ -30,7 +30,7 @@ public class FileuploadConfig implements WebMvcConfigurer {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
 		multipartResolver.setMaxInMemorySize(env.getProperty("fileupload.maxInMemorySize", Integer.class));
 		multipartResolver.setMaxUploadSize(env.getProperty("fileupload.maxUploadSize", Long.class));
-		multipartResolver.setDefaultEncoding("file:" + env.getProperty("fileupload.defaultEncoding"));
+		multipartResolver.setDefaultEncoding(env.getProperty("fileupload.defaultEncoding"));
 		return multipartResolver;
 	}
 }
