@@ -11,7 +11,8 @@
 	</context-param>
 	<context-param>
 		<param-name>contextClass</param-name>
-		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+		</param-value>
 	</context-param>
 
 	<!-- Context Load Listener -->
@@ -42,7 +43,12 @@
 		</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/spring-servlet.xml</param-value>
+			<param-value>com.douzone.mysite.config.web.WebConfig</param-value>
+		</init-param>
+		<init-param>
+			<param-name>contextClass</param-name>
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext
+			</param-value>
 		</init-param>
 	</servlet>
 	<servlet-mapping>
