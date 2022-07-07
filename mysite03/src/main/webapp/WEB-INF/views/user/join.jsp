@@ -12,6 +12,30 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="${pageContext.request.contextPath }/assets/css/user.css"
 	rel="stylesheet" type="text/css">
+<script
+	src='${pageContext.request.contextPath }/assets/js/jquery/jquery-3.6.0.js'></script>
+<script>
+	$(function() {
+		$("#btn-checkemail").click(function() {
+			var email = $("#email").val();
+			if (email === '') {
+				return;
+			}
+
+			$.ajax({
+				url : "${pageContext.request.contextPath }/api/user/existemail?email=" + email,
+				type : "get",
+				datatype : "json",
+				error : function(xhr, status, e) {
+					console.log(status, e);
+				},
+				success : function(response) {
+					console.log(response);
+				}
+			});
+		});
+	});
+</script>
 </head>
 <body>
 	<div id="container">
@@ -32,7 +56,7 @@
 					</p>
 					<label class="block-label" for="email">이메일</label>
 					<form:input path="email" />
-					<input type="button" value="중복체크">
+					<input type="button" id='btn-checkemail' value="중복체크">
 					<p style='text-align: left; padding: 0; color: red'>
 						<form:errors path='email' />
 					</p>
