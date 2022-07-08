@@ -24,6 +24,10 @@ public class UserRepository {
 		return sqlSession.selectOne("user.findByNo", userNo);
 	}
 
+	public UserVo findByEmail(String email) {
+		return sqlSession.selectOne("user.findByEmail", email);
+	}
+
 	public boolean update(UserVo vo) {
 		return sqlSession.update("user.update", vo) == 1;
 	}
