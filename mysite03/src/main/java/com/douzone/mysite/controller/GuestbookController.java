@@ -14,7 +14,7 @@ import com.douzone.mysite.vo.GuestbookVo;
 @Controller
 @RequestMapping("/guestbook")
 public class GuestbookController {
-	
+
 	@Autowired
 	private GuestbookService guestbookService;
 
@@ -41,6 +41,11 @@ public class GuestbookController {
 	public String add(GuestbookVo vo) {
 		guestbookService.addMessage(vo);
 		return "redirect:/guestbook";
+	}
+
+	@RequestMapping("/spa")
+	public String spaLanding(GuestbookVo vo) {
+		return "guestbook/index-spa";
 	}
 
 //	@ExceptionHandler(Exception.class)

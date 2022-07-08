@@ -7,6 +7,22 @@
 		]]>
 	</select>
 
+	<select id="findBySno" parameterType="long"
+		resultType="guestbookvo">
+		<choose>
+			<when test='sno == ""'>
+				<![CDATA[
+					select no, name, date_format(reg_date, '%Y-%m-%d %r') as regDate, content from guestbook order by no desc limit 0 , 5
+				]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+					select no, name, date_format(reg_date, '%Y-%m-%d %r') as regDate, content from guestbook where no < #{_parameter } order by no desc limit 0 , 5
+				]]>
+			</otherwise>
+		</choose>
+	</select>
+
 	<delete id="delete" parameterType="map">
 		<![CDATA[
 			delete from guestbook where no =#{no } and password =#{password }
